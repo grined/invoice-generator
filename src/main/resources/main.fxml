@@ -12,7 +12,7 @@
       <Button fx:id="generateButton" layoutX="361.0" layoutY="73.0" mnemonicParsing="false" text="Generate" />
       <DatePicker fx:id="datePicker" editable="false" layoutX="249.0" layoutY="35.0" />
       <TextField fx:id="urlField" layoutX="12.0" layoutY="73.0" prefHeight="25.0" prefWidth="342.0" promptText="Invoice number or Invoice url" />
-      <Label fx:id="statusLabel" layoutX="249.0" layoutY="18.0" prefHeight="17.0" prefWidth="64.0" text="Status" />
+      <Label fx:id="statusLabel" layoutX="249.0" layoutY="18.0" prefHeight="17.0" prefWidth="176.0" text="Status" />
       <RadioButton fx:id="rbInvoiceDate" layoutX="21.0" layoutY="18.0" mnemonicParsing="false" text="Use invoice date" />
       <RadioButton fx:id="rbCustomDate" layoutX="21.0" layoutY="39.0" mnemonicParsing="false" selected="true" text="Use custom deadline date" />
    </children>

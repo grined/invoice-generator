@@ -53,7 +53,7 @@ class MainController {
         val invoiceInfo = ResponseParser.extractInvoiceInfo(
 //                rawHtml = FileReader("test.data").readText(),
                 rawHtml = text,
-                useInvoiceDate = false,
+                useInvoiceDate = datePicker.isDisable,
                 manualDateDeadline = datePicker.value)
         updateStatus("Success. Generating docx . . .")
         val generatedDoc = DocGenerator.generateDoc(invoiceInfo)
@@ -63,7 +63,7 @@ class MainController {
     }
 
     fun updateStatus(status : String){
-        statusLabel.text = status;
+        statusLabel.text = "Status: " + status
     }
 }
 
