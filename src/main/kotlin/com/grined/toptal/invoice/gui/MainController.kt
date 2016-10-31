@@ -39,6 +39,7 @@ class MainController {
         val text = toptalAccessor.getInvoice(urlField.text)
         updateStatus("Success. Parsing . . .")
         val invoiceInfo = ResponseParser.extractInvoiceInfo(
+//                rawHtml = FileReader("test.data").readText(),
                 rawHtml = text,
                 useInvoiceDate = false,
                 manualDateDeadline = datePicker.value)
