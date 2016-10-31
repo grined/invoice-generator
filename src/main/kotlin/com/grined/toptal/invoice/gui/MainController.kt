@@ -5,33 +5,45 @@ import com.grined.toptal.invoice.generator.PdfGenerator
 import com.grined.toptal.invoice.toptal.ResponseParser
 import com.grined.toptal.invoice.toptal.ToptalAccessor
 import javafx.fxml.FXML
-import javafx.scene.control.Button
-import javafx.scene.control.DatePicker
-import javafx.scene.control.Label
-import javafx.scene.control.TextField
+import javafx.scene.control.*
 import java.time.LocalDate
 
 class MainController {
     @FXML
     lateinit var generateButton: Button
-
     @FXML
     lateinit var urlField: TextField
-
     @FXML
     lateinit var datePicker: DatePicker
-
     @FXML
     lateinit var statusLabel: Label
+    @FXML
+    lateinit var rbInvoiceDate: RadioButton
+    @FXML
+    lateinit var rbCustomDate: RadioButton
+
+    val toggleGroup = ToggleGroup()
 
     fun initialize() {
-        print("Controller working")
-        datePicker.value = LocalDate.now();
+        rbCustomDate.toggleGroup = toggleGroup
+        rbInvoiceDate.toggleGroup = toggleGroup
+        datePicker.value = LocalDate.now()
+        setupActions()
+    }
+
+    private fun setupActions() {
         generateButton.setOnAction {
             generate()
             print(urlField.text + " " + datePicker.value)
         }
+        rbCustomDate.setOnAction { actionOnRbSelected() }
+        rbInvoiceDate.setOnAction { actionOnRbSelected() }
     }
+
+    fun actionOnRbSelected() {
+        datePicker.isDisable = toggleGroup.selectedToggleProperty().get() == rbInvoiceDate
+    }
+
 
     fun generate() {
         updateStatus("Accessing toptal . . .")

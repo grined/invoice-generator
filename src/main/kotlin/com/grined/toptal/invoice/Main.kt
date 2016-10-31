@@ -11,6 +11,8 @@ class Main : Application() {
 
     override fun start(primaryStage: Stage?) {
         primaryStage?.scene = Scene(FXMLLoader.load<Parent?>(javaClass.classLoader.getResource(layout)))
+        primaryStage?.isResizable = false
+        primaryStage?.title = "Toptal Invoice Generator"
         primaryStage?.show()
     }
 
