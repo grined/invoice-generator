@@ -1,6 +1,7 @@
 package com.grined.toptal.invoice.generator
 
 import com.grined.toptal.invoice.PropertyHolder
+import com.grined.toptal.invoice.PropertyHolder.ReportType.DOCX
 import com.grined.toptal.invoice.toptal.InvoiceInfo
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.apache.poi.xwpf.usermodel.XWPFParagraph
@@ -8,14 +9,16 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 object DocGenerator {
-    fun generateDoc(invoiceInfo: InvoiceInfo) {
+    fun generateDoc(invoiceInfo: InvoiceInfo) : String {
         val document = XWPFDocument(FileInputStream(PropertyHolder.getProperty("template")))
         val tablesParagraphs = document.tables
                 .flatMap { t -> t.rows.flatMap { r -> r.tableCells.flatMap { c -> c.paragraphs } } }
         val allParagraphs = tablesParagraphs
                 .plus(document.paragraphs)
         allParagraphs.forEach { p -> changeText(p, buildReplacementMap(invoiceInfo)) }
-        document.write(FileOutputStream("output.docx"))
+        val outputDOCXFileName = PropertyHolder.getOutputFileName(DOCX)
+        document.write(FileOutputStream(outputDOCXFileName))
+        return outputDOCXFileName
     }
 
     private fun buildReplacementMap(invoiceInfo: InvoiceInfo): Map<String, String> =
@@ -25,21 +28,24 @@ object DocGenerator {
                     "{{title}}" to invoiceInfo.title,
                     "{{invoiceNumber}}" to invoiceInfo.number)
 
-    private fun changeText(p: XWPFParagraph, replacementMap: Map<String, String>) {
+    fun changeText(p: XWPFParagraph, replacementMap: Map<String, String>) {
         val runs = p.runs
-        if (runs != null) {
-            for (r in runs!!) {
-                var text = r.getText(0)
-                replacementMap.entries.forEach {
-                    e ->
-                    if (text != null && text!!.contains(e.key)) {
-                        text = text!!.replace(e.key, e.value)
-                        r.setText(text, 0)
-                    }
+        if (runs == null || runs.isEmpty()) {
+            return
+        }
+        val computedRun = runs.map { r -> r.getText(0) }.joinToString("")
 
-                }
+        var result = computedRun;
+        replacementMap.entries.forEach {e ->
+            result = result.replace(e.key, e.value)
+        }
 
-            }
+        if (!result.equals(computedRun)){
+            for (k in runs.size - 1 downTo 1)
+                p.removeRun(k)
+
+            val run = runs[0]
+            run.setText(result, 0)
         }
     }
 }

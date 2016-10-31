@@ -1,7 +1,9 @@
 package com.grined.toptal.invoice.toptal
 
+import com.grined.toptal.invoice.PropertyHolder
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -9,18 +11,26 @@ import java.util.*
 object ResponseParser {
     fun extractInvoiceInfo(
             rawHtml : String,
+            minusCommission : Boolean = true,
             useInvoiceDate : Boolean = true,
             manualDateDeadline: LocalDate = LocalDate.MIN) : InvoiceInfo {
-        val parsedInvoiceInfo = parse(rawHtml)
+        var currentInfo = parse(rawHtml)
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)
         if (useInvoiceDate){
-            val dateDeadline = LocalDate.parse(parsedInvoiceInfo.date, formatter).plusDays(20)
-            return parsedInvoiceInfo.copy(dateDeadline = formatter.format(dateDeadline))
+            val dateDeadline = LocalDate.parse(currentInfo.date, formatter).plusDays(20)
+            currentInfo = currentInfo.copy(dateDeadline = formatter.format(dateDeadline))
         } else {
             val date = manualDateDeadline.minusDays(20)
-            return parsedInvoiceInfo.copy(date = formatter.format(date),
+            currentInfo = currentInfo.copy(date = formatter.format(date),
                     dateDeadline = formatter.format(manualDateDeadline))
         }
+        if (minusCommission){
+            val moneyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
+            val commission = PropertyHolder.getProperty("commission").toLong()
+            val amount = moneyFormatter.parse(currentInfo.amount).toLong().minus(commission)
+            currentInfo = currentInfo.copy(amount = moneyFormatter.format(amount))
+        }
+        return currentInfo
     }
 
     private fun parse(rawHtml : String) : InvoiceInfo {
