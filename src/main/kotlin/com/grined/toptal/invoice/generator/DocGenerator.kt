@@ -33,9 +33,8 @@ object DocGenerator {
         if (runs == null || runs.isEmpty()) {
             return
         }
-        val computedRun = runs.map { r -> r.getText(0) }.joinToString("")
-
-        var result = computedRun;
+        val computedRun = runs.map { r -> r.getText(0) }.filterNotNull().joinToString("")
+        var result = computedRun
         replacementMap.entries.forEach {e ->
             result = result.replace(e.key, e.value)
         }
