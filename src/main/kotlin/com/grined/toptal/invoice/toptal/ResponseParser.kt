@@ -13,7 +13,9 @@ object ResponseParser {
             rawHtml : String,
             minusCommission : Boolean = true,
             useInvoiceDate : Boolean = true,
-            manualDateDeadline: LocalDate = LocalDate.MIN) : InvoiceInfo {
+            manualDateDeadline: LocalDate = LocalDate.MIN,
+            useCustomAmount: Boolean = false,
+            customAmount: String = "") : InvoiceInfo {
         var currentInfo = parse(rawHtml)
         val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH)
         if (useInvoiceDate){
@@ -24,10 +26,14 @@ object ResponseParser {
             currentInfo = currentInfo.copy(date = formatter.format(date),
                     dateDeadline = formatter.format(manualDateDeadline))
         }
+
+        val moneyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
+        if (useCustomAmount) {
+            currentInfo = currentInfo.copy(amount = moneyFormatter.format(customAmount.toDouble()))
+        }
         if (minusCommission){
-            val moneyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
             val commission = PropertyHolder.getProperty("commission").toLong()
-            val amount = moneyFormatter.parse(currentInfo.amount).toLong().minus(commission)
+            val amount = moneyFormatter.parse(currentInfo.amount).toDouble().minus(commission)
             currentInfo = currentInfo.copy(amount = moneyFormatter.format(amount))
         }
         return currentInfo

@@ -3,10 +3,12 @@ package com.grined.toptal.invoice.gui
 import com.grined.toptal.invoice.generator.DocGenerator
 import com.grined.toptal.invoice.generator.PdfGenerator
 import com.grined.toptal.invoice.toptal.ResponseParser
-import com.grined.toptal.invoice.toptal.ToptalAccessor
+import com.grined.toptal.invoice.toptal.ToptalAccessorLocal
+import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.*
 import java.time.LocalDate
+import java.util.concurrent.CompletableFuture
 
 class MainController {
     @FXML
@@ -21,6 +23,10 @@ class MainController {
     lateinit var rbInvoiceDate: RadioButton
     @FXML
     lateinit var rbCustomDate: RadioButton
+    @FXML
+    lateinit var cbUseCustomAmount: CheckBox
+    @FXML
+    lateinit var amountField: TextField
 
     val toggleGroup = ToggleGroup()
 
@@ -46,24 +52,30 @@ class MainController {
 
 
     fun generate() {
-        updateStatus("Accessing toptal . . .")
-        val toptalAccessor = ToptalAccessor()
-        val text = toptalAccessor.getInvoice(urlField.text)
-        updateStatus("Success. Parsing . . .")
-        val invoiceInfo = ResponseParser.extractInvoiceInfo(
-//                rawHtml = FileReader("test.data").readText(),
-                rawHtml = text,
-                useInvoiceDate = datePicker.isDisable,
-                manualDateDeadline = datePicker.value)
-        updateStatus("Success. Generating docx . . .")
-        val generatedDoc = DocGenerator.generateDoc(invoiceInfo)
-        updateStatus("Success. Generating pdf . . .")
-        PdfGenerator.buildPdf(generatedDoc)
-        updateStatus("Generated successfull!")
+        CompletableFuture.supplyAsync {
+            updateStatus("Accessing toptal . . .")
+            // val toptalAccessor = ToptalAccessor()
+            val toptalAccessor = ToptalAccessorLocal()
+            toptalAccessor.getInvoice(urlField.text)
+        }.thenApply{ text ->
+            updateStatus("Success. Parsing . . .")
+            ResponseParser.extractInvoiceInfo(
+                    rawHtml = text,
+                    useInvoiceDate = datePicker.isDisable,
+                    manualDateDeadline = datePicker.value,
+                    useCustomAmount = cbUseCustomAmount.isSelected,
+                    customAmount = amountField.text)
+        }.thenApply { invoiceInfo ->
+            updateStatus("Success. Generating docx . . .")
+            DocGenerator.generateDoc(invoiceInfo)
+        }.thenApply { generatedDoc ->
+            updateStatus("Success. Generating pdf . . .")
+            PdfGenerator.buildPdf(generatedDoc)
+        }.thenAccept { updateStatus("Generated successfull!") }
     }
 
-    fun updateStatus(status : String){
-        statusLabel.text = "Status: " + status
+    fun updateStatus(status: String) {
+        Platform.runLater { statusLabel.text = "Status: " + status }
     }
 }
 
