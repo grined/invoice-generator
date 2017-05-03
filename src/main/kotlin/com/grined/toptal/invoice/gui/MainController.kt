@@ -3,7 +3,7 @@ package com.grined.toptal.invoice.gui
 import com.grined.toptal.invoice.generator.DocGenerator
 import com.grined.toptal.invoice.generator.PdfGenerator
 import com.grined.toptal.invoice.toptal.ResponseParser
-import com.grined.toptal.invoice.toptal.ToptalAccessorLocal
+import com.grined.toptal.invoice.toptal.ToptalAccessor
 import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.scene.control.*
@@ -44,18 +44,26 @@ class MainController {
         }
         rbCustomDate.setOnAction { actionOnRbSelected() }
         rbInvoiceDate.setOnAction { actionOnRbSelected() }
+        cbUseCustomAmount.setOnAction { actionOnCbChanged() }
     }
 
-    fun actionOnRbSelected() {
+    private fun actionOnCbChanged() {
+        if (!cbUseCustomAmount.isSelected) {
+            amountField.text = ""
+        }
+        amountField.isDisable = !cbUseCustomAmount.isSelected
+    }
+
+    private fun actionOnRbSelected() {
         datePicker.isDisable = toggleGroup.selectedToggleProperty().get() == rbInvoiceDate
     }
 
 
-    fun generate() {
+    private fun generate() {
         CompletableFuture.supplyAsync {
             updateStatus("Accessing toptal . . .")
-            // val toptalAccessor = ToptalAccessor()
-            val toptalAccessor = ToptalAccessorLocal()
+             val toptalAccessor = ToptalAccessor()
+//            val toptalAccessor = ToptalAccessorLocal()
             toptalAccessor.getInvoice(urlField.text)
         }.thenApply{ text ->
             updateStatus("Success. Parsing . . .")
@@ -74,7 +82,7 @@ class MainController {
         }.thenAccept { updateStatus("Generated successfull!") }
     }
 
-    fun updateStatus(status: String) {
+    private fun updateStatus(status: String) {
         Platform.runLater { statusLabel.text = "Status: " + status }
     }
 }

@@ -17,6 +17,6 @@
       <RadioButton fx:id="rbInvoiceDate" layoutX="21.0" layoutY="18.0" mnemonicParsing="false" text="Use invoice date" />
       <RadioButton fx:id="rbCustomDate" layoutX="21.0" layoutY="39.0" mnemonicParsing="false" selected="true" text="Use custom deadline date" />
       <CheckBox fx:id="cbUseCustomAmount" layoutX="21.0" layoutY="63.0" mnemonicParsing="false" text="Use custom amount" />
-      <TextField fx:id="amountField" layoutX="249.0" layoutY="64.0" prefHeight="25.0" prefWidth="176.0" promptText="Amount" />
+      <TextField fx:id="amountField" disable="true" layoutX="249.0" layoutY="64.0" prefHeight="25.0" prefWidth="176.0" promptText="Amount" />
    </children>
 </Pane>
