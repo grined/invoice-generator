@@ -1,31 +1,32 @@
 package com.grined.toptal.invoice.gui
 
 import com.grined.toptal.invoice.generator.DocGenerator
+import com.grined.toptal.invoice.generator.InvoiceConstructor
 import com.grined.toptal.invoice.generator.PdfGenerator
 import com.grined.toptal.invoice.toptal.ResponseParser
 import com.grined.toptal.invoice.toptal.ToptalAccessor
 import javafx.application.Platform
-import javafx.fxml.FXML
 import javafx.scene.control.*
 import java.time.LocalDate
 import java.util.concurrent.CompletableFuture
 
-class MainController {
-    @FXML
+
+class ToptalFormController {
+//    @FXML
     lateinit var generateButton: Button
-    @FXML
+//    @FXML
     lateinit var urlField: TextField
-    @FXML
+//    @FXML
     lateinit var datePicker: DatePicker
-    @FXML
+//    @FXML
     lateinit var statusLabel: Label
-    @FXML
+//    @FXML
     lateinit var rbInvoiceDate: RadioButton
-    @FXML
+//    @FXML
     lateinit var rbCustomDate: RadioButton
-    @FXML
+//    @FXML
     lateinit var cbUseCustomAmount: CheckBox
-    @FXML
+//    @FXML
     lateinit var amountField: TextField
 
     val toggleGroup = ToggleGroup()
@@ -67,8 +68,11 @@ class MainController {
             toptalAccessor.getInvoice(urlField.text)
         }.thenApply{ text ->
             updateStatus("Success. Parsing . . .")
-            ResponseParser.extractInvoiceInfo(
-                    rawHtml = text,
+            ResponseParser.parse(text)
+        }.thenApply { invoiceInfo ->
+            updateStatus("Success. Constructing . . .")
+            InvoiceConstructor.construct(
+                    invoiceInfo = invoiceInfo,
                     useInvoiceDate = datePicker.isDisable,
                     manualDateDeadline = datePicker.value,
                     useCustomAmount = cbUseCustomAmount.isSelected,

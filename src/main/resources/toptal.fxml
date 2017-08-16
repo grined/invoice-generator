@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grined.toptal.invoice.gui.MainController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="437.0" xmlns="http://javafx.com/javafx/8.0.45" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grined.toptal.invoice.gui.ToptalFormController">
    <children>
       <Button fx:id="generateButton" layoutX="361.0" layoutY="94.0" mnemonicParsing="false" text="Generate" />
       <DatePicker fx:id="datePicker" editable="false" layoutX="249.0" layoutY="35.0" />

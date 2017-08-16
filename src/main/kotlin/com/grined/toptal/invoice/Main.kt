@@ -7,7 +7,7 @@ import javafx.scene.Scene
 import javafx.stage.Stage
 
 class Main : Application() {
-    val layout = "main.fxml"
+    val layout = "manual.fxml"
 
     override fun start(primaryStage: Stage?) {
         primaryStage?.scene = Scene(FXMLLoader.load<Parent?>(javaClass.classLoader.getResource(layout)))
