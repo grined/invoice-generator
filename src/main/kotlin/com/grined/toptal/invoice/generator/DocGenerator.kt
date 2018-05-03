@@ -1,7 +1,5 @@
 package com.grined.toptal.invoice.generator
 
-import com.grined.toptal.invoice.PropertyHolder
-import com.grined.toptal.invoice.PropertyHolder.ReportType.DOCX
 import com.grined.toptal.invoice.toptal.InvoiceInfo
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.apache.poi.xwpf.usermodel.XWPFParagraph
@@ -9,16 +7,15 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 
 object DocGenerator {
-    fun generateDoc(invoiceInfo: InvoiceInfo) : String {
-        val document = XWPFDocument(FileInputStream(PropertyHolder.getProperty("template")))
+    fun generateDoc(invoiceInfo: InvoiceInfo, template: String, outputDOCX: String) : String {
+        val document = XWPFDocument(FileInputStream(template))
         val tablesParagraphs = document.tables
                 .flatMap { t -> t.rows.flatMap { r -> r.tableCells.flatMap { c -> c.paragraphs } } }
         val allParagraphs = tablesParagraphs
                 .plus(document.paragraphs)
         allParagraphs.forEach { p -> changeText(p, buildReplacementMap(invoiceInfo)) }
-        val outputDOCXFileName = PropertyHolder.getOutputFileName(DOCX)
-        document.write(FileOutputStream(outputDOCXFileName))
-        return outputDOCXFileName
+        document.write(FileOutputStream(outputDOCX))
+        return outputDOCX
     }
 
     private fun buildReplacementMap(invoiceInfo: InvoiceInfo): Map<String, String> =
@@ -26,7 +23,10 @@ object DocGenerator {
                     "{{date}}" to invoiceInfo.date,
                     "{{dateDeadline}}" to invoiceInfo.dateDeadline,
                     "{{title}}" to invoiceInfo.title,
-                    "{{invoiceNumber}}" to invoiceInfo.number)
+                    "{{invoiceNumber}}" to invoiceInfo.number,
+                    "{{hours}}" to invoiceInfo.hours,
+                    "{{workDateStart}}" to invoiceInfo.workDateStart,
+                    "{{workDateEnd}}" to invoiceInfo.workDateEnd)
 
     fun changeText(p: XWPFParagraph, replacementMap: Map<String, String>) {
         val runs = p.runs

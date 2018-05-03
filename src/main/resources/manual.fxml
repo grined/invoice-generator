@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="386.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.grined.toptal.invoice.gui.ManualFormController">
-   <children>
-      <Button fx:id="manualGenerateButton" layoutX="198.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="Generate" />
-      <DatePicker fx:id="manualDatePicker" editable="false" layoutX="198.0" layoutY="35.0" />
-      <TextField fx:id="manualTitleField" layoutX="12.0" layoutY="65.0" prefHeight="25.0" prefWidth="362.0" promptText="Title" />
-      <Label fx:id="manualStatusLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="176.0" text="Status" />
-      <TextField fx:id="manualAmountField" layoutX="12.0" layoutY="94.0" prefHeight="25.0" prefWidth="176.0" promptText="Amount" />
-      <TextField fx:id="manualInvoiceNumber" layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="176.0" promptText="Invoice number" />
-   </children>
-</Pane>
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="164.0" prefWidth="386.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.grined.toptal.invoice.gui.ToptalFormController">
+    <tabs>
+        <Tab text="Toptal">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="386.0">
+                <Button fx:id="toptalGenerateButton" layoutX="198.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="Generate" />
+                <DatePicker fx:id="toptalDatePicker" editable="false" layoutX="198.0" layoutY="35.0" />
+                <TextField fx:id="toptalTitleField" layoutX="12.0" layoutY="65.0" prefHeight="25.0" prefWidth="362.0" promptText="Title" />
+                <Label fx:id="toptalStatusLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="176.0" text="Status" />
+                <TextField fx:id="toptalAmountField" layoutX="12.0" layoutY="94.0" prefHeight="25.0" prefWidth="176.0" promptText="Amount" />
+                <TextField fx:id="toptalInvoiceNumber" layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="176.0" promptText="Invoice number" />
+            </AnchorPane>
+        </Tab>
+        <Tab text="RadBee">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="386.0">
+                    <Button fx:id="radbeeGenerateButton" layoutX="198.0" layoutY="94.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="176.0" text="Generate" />
+                    <DatePicker fx:id="radbeeDatePicker" editable="false" layoutX="198.0" layoutY="35.0" />
+                    <Label fx:id="radbeeStatusLabel" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="176.0" text="Status" />
+                    <TextField fx:id="radbeeAmountField" layoutX="139.0" layoutY="64.0" prefHeight="25.0" prefWidth="235.0" promptText="Amount" />
+                    <TextField fx:id="radbeeInvoiceNumber" layoutX="12.0" layoutY="35.0" prefHeight="25.0" prefWidth="176.0" promptText="Invoice number" />
+                    <CheckBox fx:id="radbeeIgnoreHoursCheckbox" layoutX="14.0" layoutY="98.0" mnemonicParsing="false" text="Ignore hours" />
+                    <TextField fx:id="radbeeHoursField" layoutX="12.0" layoutY="64.0" prefHeight="25.0" prefWidth="60.0" promptText="Hours" />
+                    <Label fx:id="radbeeRateLabel" layoutX="80.0" layoutY="68.0" prefHeight="17.0" prefWidth="109.0" text="* rate = " />
+                </AnchorPane>
+            </content>
+        </Tab>
+    </tabs>
+</TabPane>

@@ -1,7 +1,5 @@
 package com.grined.toptal.invoice.generator
 
-import com.grined.toptal.invoice.PropertyHolder
-import com.grined.toptal.invoice.PropertyHolder.ReportType.PDF
 import fr.opensagres.xdocreport.converter.ConverterRegistry
 import fr.opensagres.xdocreport.converter.ConverterTypeTo
 import fr.opensagres.xdocreport.converter.Options
@@ -11,12 +9,12 @@ import java.io.FileOutputStream
 
 object PdfGenerator {
 
-    fun buildPdf(docxFilename : String){
+    fun buildPdf(docxFilename : String, outputPDF: String){
         val options = Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF)
         val converter = ConverterRegistry.getRegistry().getConverter(options)
 
         converter.convert(FileInputStream(docxFilename),
-                FileOutputStream(PropertyHolder.getOutputFileName(PDF)), options)
+                FileOutputStream(outputPDF), options)
 
     }
 }

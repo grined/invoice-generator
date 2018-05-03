@@ -1,0 +1,18 @@
+﻿toptal:
+  paidDurationDays: 20
+  template: ToptalInvoiceTemplate.docx
+  outputDocx: Toptal invoice.docx
+  outputPdf: Toptal invoice.pdf
+radbee:
+  startingInvoiceNumber: 3
+  rate: 11
+  paidDurationDays: 30
+  template: ToptalInvoiceTemplate.docx
+  outputDocx: Toptal invoice.docx
+  outputPdf: Toptal invoice.pdf
+radbeeExtra:
+  startingInvoiceNumber: 3
+  paidDurationDays: 30
+  template: ToptalInvoiceTemplate.docx
+  outputDocx: Toptal invoice.docx
+  outputPdf: Toptal invoice.pdf

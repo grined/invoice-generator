@@ -1,8 +1,11 @@
 package com.grined.toptal.invoice.toptal
 
 data class InvoiceInfo (
-        val number : String,
-        val date : String,
-        val dateDeadline : String,
-        val amount : String,
-        val title : String)
+        val number : String = "",
+        val date : String = "",
+        val dateDeadline : String = "",
+        val amount : String = "",
+        val title : String = "",
+        val hours: String = "",
+        val workDateStart: String = "",
+        val workDateEnd: String = "")

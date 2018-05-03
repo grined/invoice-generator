@@ -1,12 +1,12 @@
-group 'toptal-tool'
-version '0.2'
+version = '2.0'
 
 buildscript {
-    ext.kotlin_version = '1.0.3'
+    ext.kotlin_version = '1.2.30'
 
     repositories {
         mavenCentral()
     }
+
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -15,7 +15,7 @@ buildscript {
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
-mainClassName = "com.grined.toptal.invoice.Main"
+mainClassName = "com.grined.toptal.invoice.MainKt"
 
 jar {
     manifest {
@@ -23,7 +23,7 @@ jar {
     }
 
     from {
-        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtime.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
@@ -32,7 +32,7 @@ repositories {
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "com.squareup.okhttp3:okhttp:3.4.1"
     compile "org.jsoup:jsoup:1.10.1"
     compile "org.apache.poi:poi:3.15"
@@ -40,7 +40,15 @@ dependencies {
     compile "org.joda:joda-money:0.11"
     compile "fr.opensagres.xdocreport:fr.opensagres.xdocreport.document.docx:1.0.6"
     compile "fr.opensagres.xdocreport:fr.opensagres.xdocreport.converter.docx.xwpf:1.0.6"
-
-
-
+    compile "com.fasterxml.jackson.core:jackson-databind:2.9.5"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.5"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
 }
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
