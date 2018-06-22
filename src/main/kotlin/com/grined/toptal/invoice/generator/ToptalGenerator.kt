@@ -1,7 +1,7 @@
 package com.grined.toptal.invoice.generator
 
+import com.grined.toptal.invoice.gui.StatusUpdater
 import com.grined.toptal.invoice.properties.PropertyHolder
-import javafx.application.Platform
 import javafx.scene.control.Label
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -12,7 +12,7 @@ object ToptalGenerator {
 
     fun generateToptal(date: LocalDate, amount: String, invoiceNumber: String, title: String, statusLabel: Label) {
         CompletableFuture.supplyAsync {
-            updateStatus("Creating document . . .", statusLabel)
+            StatusUpdater.updateStatus("Creating document . . .", statusLabel)
             InvoiceConstructor.construct(
                     moneyAlreadyReceived = true,
                     paidDeadlineDuration = config.paidDurationDays,
@@ -21,16 +21,14 @@ object ToptalGenerator {
                     customInvoiceNumber = invoiceNumber,
                     customTitle = title)
         }.thenApply { invoiceInfo ->
-            updateStatus("Success. Generating docx . . .", statusLabel)
+            StatusUpdater.updateStatus("Success. Generating docx . . .", statusLabel)
             DocGenerator.generateDoc(invoiceInfo, config.template, withSuffix(config.outputDocx))
         }.thenApply { generatedDoc ->
-            updateStatus("Success. Generating pdf . . .", statusLabel)
+            StatusUpdater.updateStatus("Success. Generating pdf . . .", statusLabel)
             PdfGenerator.buildPdf(generatedDoc, withSuffix(config.outputPdf))
-        }.thenAccept { updateStatus("Generated successfull!", statusLabel) }
-    }
-
-    private fun updateStatus(status: String, statusLabel: Label) {
-        Platform.runLater { statusLabel.text = "Status: " + status }
+        }.thenAccept { file ->
+            StatusUpdater.updateStatus("Generated successfull!", statusLabel, completed = true, file = file)
+        }
     }
 
     private fun withSuffix(fileName: String) : String {
