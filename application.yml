@@ -10,6 +10,7 @@ radbee:
   template: ToptalInvoiceTemplate.docx
   outputDocx: Toptal invoice.docx
   outputPdf: Toptal invoice.pdf
+  additionalDateGap: 0
 radbeeExtra:
   startingInvoiceNumber: 3
   paidDurationDays: 30

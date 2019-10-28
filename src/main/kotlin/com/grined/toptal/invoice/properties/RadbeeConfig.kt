@@ -7,4 +7,5 @@ data class RadbeeConfig (
         val paidDurationDays: Long,
         val template: String,
         val outputDocx: String,
-        val outputPdf: String)
+        val outputPdf: String,
+        val additionalDateGap: Long = 0)
