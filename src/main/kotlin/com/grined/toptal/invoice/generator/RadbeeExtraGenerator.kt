@@ -1,9 +1,7 @@
 package com.grined.toptal.invoice.generator
 
-import com.grined.toptal.invoice.DBAccessor
-import com.grined.toptal.invoice.gui.StatusUpdater
+import com.grined.toptal.invoice.data.DBAccessor
 import com.grined.toptal.invoice.properties.PropertyHolder
-import javafx.scene.control.Label
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.CompletableFuture
@@ -11,9 +9,9 @@ import java.util.concurrent.CompletableFuture
 object RadbeeExtraGenerator {
     private val config = PropertyHolder.applicationConfig.radbeeExtra
 
-    fun generateRadbee(date: LocalDate, amount: String, invoiceNumber: String, statusLabel: Label) {
+    fun generateRadbee(date: LocalDate, amount: String, invoiceNumber: String) {
         CompletableFuture.supplyAsync {
-            StatusUpdater.updateStatus("Creating document . . .", statusLabel)
+            println("Creating document . . .")
             InvoiceConstructor.construct(
                     moneyAlreadyReceived = false,
                     paidDeadlineDuration = config.paidDurationDays,
@@ -22,13 +20,13 @@ object RadbeeExtraGenerator {
                     customInvoiceNumber = invoiceNumber
             )
         }.thenApply { invoiceInfo ->
-            StatusUpdater.updateStatus("Success. Generating docx . . .", statusLabel)
+            println("Success. Generating docx . . .")
             DocGenerator.generateDoc(invoiceInfo, config.template, withSuffix(config.outputDocx, invoiceNumber))
         }.thenApply { generatedDoc ->
-            StatusUpdater.updateStatus("Success. Generating pdf . . .", statusLabel)
+            println("Success. Generating pdf . . .")
             PdfGenerator.buildPdf(generatedDoc, withSuffix(config.outputPdf, invoiceNumber))
         }.thenAccept { file ->
-            StatusUpdater.updateStatus("Generated successfull!", statusLabel, completed = true, file = file)
+            println("Generated successfull!")
         }.thenAccept { DBAccessor.incrementInvoiceNumber(invoiceNumber.toLong()) }
     }
     

@@ -1,8 +1,6 @@
 package com.grined.toptal.invoice.generator
 
-import com.grined.toptal.invoice.gui.StatusUpdater
 import com.grined.toptal.invoice.properties.PropertyHolder
-import javafx.scene.control.Label
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.CompletableFuture
@@ -10,9 +8,9 @@ import java.util.concurrent.CompletableFuture
 object ToptalGenerator {
     private val config = PropertyHolder.applicationConfig.toptal
 
-    fun generateToptal(date: LocalDate, amount: String, invoiceNumber: String, title: String, statusLabel: Label) {
+    fun generateToptal(date: LocalDate, amount: String, invoiceNumber: String, title: String) {
         CompletableFuture.supplyAsync {
-            StatusUpdater.updateStatus("Creating document . . .", statusLabel)
+            println("Creating document . . .")
             InvoiceConstructor.construct(
                     moneyAlreadyReceived = true,
                     paidDeadlineDuration = config.paidDurationDays,
@@ -21,13 +19,13 @@ object ToptalGenerator {
                     customInvoiceNumber = invoiceNumber,
                     customTitle = title)
         }.thenApply { invoiceInfo ->
-            StatusUpdater.updateStatus("Success. Generating docx . . .", statusLabel)
+            println("Success. Generating docx . . .")
             DocGenerator.generateDoc(invoiceInfo, config.template, withSuffix(config.outputDocx))
         }.thenApply { generatedDoc ->
-            StatusUpdater.updateStatus("Success. Generating pdf . . .", statusLabel)
+            println("Success. Generating pdf . . .")
             PdfGenerator.buildPdf(generatedDoc, withSuffix(config.outputPdf))
         }.thenAccept { file ->
-            StatusUpdater.updateStatus("Generated successfull!", statusLabel, completed = true, file = file)
+            println("Generated successfull!")
         }
     }
 

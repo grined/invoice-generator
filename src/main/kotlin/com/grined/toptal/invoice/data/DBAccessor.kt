@@ -1,4 +1,4 @@
-package com.grined.toptal.invoice
+package com.grined.toptal.invoice.data
 
 import com.grined.toptal.invoice.properties.PropertyHolder
 import java.io.File
@@ -8,11 +8,11 @@ object DBAccessor {
     private val databaseFile = File("database.db")
 
 
-    fun currentInvoiceNumber(): Long {
+    fun currentInvoiceNumber(): String {
         if (databaseFile.createNewFile()) {
             writeValue(startingInvoiceNumber)
         }
-        return readCurrentValue()
+        return readCurrentValue().toString()
     }
 
     fun incrementInvoiceNumber(currentInvoiceNumber: Long) = writeValue(currentInvoiceNumber + 1)

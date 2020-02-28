@@ -1,4 +1,4 @@
-package com.grined.toptal.invoice.toptal
+package com.grined.toptal.invoice.data
 
 data class InvoiceInfo (
         val number : String = "",
@@ -8,4 +8,5 @@ data class InvoiceInfo (
         val title : String = "",
         val hours: String = "",
         val workDateStart: String = "",
-        val workDateEnd: String = "")
+        val workDateEnd: String = "") {
+}

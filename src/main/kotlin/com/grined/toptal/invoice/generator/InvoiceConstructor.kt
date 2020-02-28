@@ -1,7 +1,7 @@
 package com.grined.toptal.invoice.generator
 
+import com.grined.toptal.invoice.data.InvoiceInfo
 import com.grined.toptal.invoice.properties.PropertyHolder
-import com.grined.toptal.invoice.toptal.InvoiceInfo
 import java.text.NumberFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

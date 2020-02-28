@@ -1,6 +1,6 @@
 package com.grined.toptal.invoice.generator
 
-import com.grined.toptal.invoice.toptal.InvoiceInfo
+import com.grined.toptal.invoice.data.InvoiceInfo
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import org.apache.poi.xwpf.usermodel.XWPFParagraph
 import java.io.FileInputStream
@@ -39,7 +39,7 @@ object DocGenerator {
             result = result.replace(e.key, e.value)
         }
 
-        if (!result.equals(computedRun)){
+        if (result != computedRun){
             for (k in runs.size - 1 downTo 1)
                 p.removeRun(k)
 
