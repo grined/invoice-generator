@@ -10,7 +10,7 @@ import java.io.FileOutputStream
 
 object PdfGenerator {
 
-    fun buildPdf(docxFilename : String, outputPDF: String): File {
+    fun buildPdf(docxFilename: String, outputPDF: String): File {
         val options = Options.getFrom(DocumentKind.DOCX).to(ConverterTypeTo.PDF)
         val converter = ConverterRegistry.getRegistry().getConverter(options)
         converter.convert(FileInputStream(docxFilename), FileOutputStream(outputPDF), options)

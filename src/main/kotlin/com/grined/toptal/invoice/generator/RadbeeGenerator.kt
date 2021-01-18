@@ -5,7 +5,7 @@ import java.time.DayOfWeek.*
 import java.time.LocalDate
 import java.time.temporal.TemporalAdjusters
 
-object RadbeeGenerator: BasicGenerator() {
+object RadbeeGenerator : BasicGenerator() {
     private val config = PropertyHolder.applicationConfig.radbee
 
     fun generateRadbee(date: LocalDate, invoiceNumber: String, hours: Int) {
@@ -15,20 +15,20 @@ object RadbeeGenerator: BasicGenerator() {
             date.with(TemporalAdjusters.previous(SUNDAY))
         }
         val workDateStart: LocalDate = workDateEnd
-                .with(TemporalAdjusters.previous(SUNDAY))
-                .with(TemporalAdjusters.previous(MONDAY))
+            .with(TemporalAdjusters.previous(SUNDAY))
+            .with(TemporalAdjusters.previous(MONDAY))
         println("Preparing parameters . . .")
 
         val invoiceInfo = InvoiceConstructor.construct(
-                moneyAlreadyReceived = false,
-                paidDeadlineDuration = config.paidDurationDays,
-                invoiceDate = date,
-                customAmount = "${hours * PropertyHolder.applicationConfig.radbee.rate}",
-                customInvoiceNumber = invoiceNumber,
-                hours = hours,
-                workDateStart = workDateStart,
-                workDateEnd = workDateEnd
+            paidDeadlineDuration = config.paidDurationDays,
+            invoiceDate = date,
+            customAmount = "${hours * config.rate}",
+            customInvoiceNumber = invoiceNumber,
+            hours = hours,
+            workDateStart = workDateStart,
+            workDateEnd = workDateEnd,
+            additionalDateGap = config.additionalDateGap
         )
-        generateDocAndPdf(invoiceInfo, config.template, config.outputDocx, config.outputPdf, invoiceNumber);
+        generateDocAndPdf(invoiceInfo, config.template, config.outputDocx, config.outputPdf, invoiceNumber)
     }
 }

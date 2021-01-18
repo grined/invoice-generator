@@ -9,11 +9,11 @@ import java.time.format.DateTimeFormatter
 abstract class BasicGenerator(private val withInvoiceNumber: Boolean = true) {
 
     fun generateDocAndPdf(
-            invoiceInfo: InvoiceInfo,
-            template: String,
-            outputDocx: String,
-            outputPdf: String,
-            invoiceNumber: String
+        invoiceInfo: InvoiceInfo,
+        template: String,
+        outputDocx: String,
+        outputPdf: String,
+        invoiceNumber: String
     ) {
         takeIf { askAndGetIfUserApproved(invoiceInfo) } ?: return
         println("Success. Generating docx . . .")
@@ -28,9 +28,11 @@ abstract class BasicGenerator(private val withInvoiceNumber: Boolean = true) {
 
     private fun withSuffix(fileName: String, invoiceNumber: String): String {
         val position = fileName.lastIndexOf(".")
-        return fileName.replaceRange(position, position, "_" +
-                LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) +
-                if (withInvoiceNumber) "_$invoiceNumber" else "")
+        return fileName.replaceRange(
+            position, position, "_" +
+                    LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd")) +
+                    if (withInvoiceNumber) "_$invoiceNumber" else ""
+        )
     }
 
 }

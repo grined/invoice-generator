@@ -7,7 +7,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
 
 object PropertyHolder {
-    val applicationConfig : ApplicationConfig by lazy{
+    val applicationConfig: ApplicationConfig by lazy {
         val objectMapper = ObjectMapper(YAMLFactory()).registerKotlinModule()
         objectMapper.readValue<ApplicationConfig>(File("application.yml"))
     }

@@ -18,13 +18,13 @@ object DBAccessor {
     fun incrementInvoiceNumber(currentInvoiceNumber: Long) = writeValue(currentInvoiceNumber + 1)
 
     private fun readCurrentValue(): Long =
-            databaseFile.reader().use { input ->
-                return input.readText().toLong()
-            }
+        databaseFile.reader().use { input ->
+            return input.readText().toLong()
+        }
 
     private fun writeValue(invoiceNumber: Long) =
-            databaseFile.printWriter().use { out ->
-                out.write(invoiceNumber.toString())
-            }
+        databaseFile.printWriter().use { out ->
+            out.write(invoiceNumber.toString())
+        }
 
 }

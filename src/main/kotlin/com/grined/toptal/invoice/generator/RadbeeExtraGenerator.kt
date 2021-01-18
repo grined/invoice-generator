@@ -9,12 +9,11 @@ object RadbeeExtraGenerator : BasicGenerator() {
     fun generateRadbeeExtra(date: LocalDate, amount: String, invoiceNumber: String) {
         println("Preparing parameters . . .")
         val invoiceInfo = InvoiceConstructor.construct(
-                moneyAlreadyReceived = false,
-                paidDeadlineDuration = config.paidDurationDays,
-                invoiceDate = date,
-                customAmount = amount,
-                customInvoiceNumber = invoiceNumber
+            paidDeadlineDuration = config.paidDurationDays,
+            invoiceDate = date,
+            customAmount = amount,
+            customInvoiceNumber = invoiceNumber
         )
-        generateDocAndPdf(invoiceInfo, config.template, config.outputDocx, config.outputPdf, invoiceNumber);
+        generateDocAndPdf(invoiceInfo, config.template, config.outputDocx, config.outputPdf, invoiceNumber)
     }
 }

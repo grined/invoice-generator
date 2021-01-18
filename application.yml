@@ -17,3 +17,11 @@ radbeeExtra:
   template: ToptalInvoiceTemplate.docx
   outputDocx: Toptal invoice.docx
   outputPdf: Toptal invoice.pdf
+radbeeFlatFee:
+  startingInvoiceNumber: 3
+  rate: 500
+  paidDurationDays: 30
+  additionalDateGap: 7
+  template: ToptalInvoiceTemplate.docx
+  outputDocx: Test invoice.docx
+  outputPdf: Test invoice.pdf

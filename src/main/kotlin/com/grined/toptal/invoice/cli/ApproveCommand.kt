@@ -8,13 +8,14 @@ import picocli.CommandLine.Command
 class ApproveCommand : Runnable {
     @CommandLine.Parameters(interactive = true, index = "0", description = ["y/n"])
     var answer: String = "n"
+
     @CommandLine.Parameters(hidden = true, index = "*")
     var stub: String = ""
 
     override fun run() {}
 }
 
-fun askAndGetIfUserApproved(invoiceInfo: InvoiceInfo) : Boolean {
+fun askAndGetIfUserApproved(invoiceInfo: InvoiceInfo): Boolean {
     println("Data prepared: \n$invoiceInfo")
     val approveCommand = ApproveCommand()
     println("Do you want to generate invoices?")
